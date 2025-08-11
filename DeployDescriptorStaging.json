@@ -1,36 +1,25 @@
 {
-"DeployDescriptor":
+  "DeployDescriptor":
   [
     {
-      "Property" :"RunAs",
-      "Assign" : "bmc"
+      "Property" :"ControlmServer",
+      "Assign" : "IN01"
     },
     {
-      "Property" :"Host",
-      "Assign" : "192.168.15.59"
+      "Property" :"Application",
+      "Replace" : [ {"T(.*)" : "P$1"} ]
     },
     {
-      "ApplyOn" : {
-       "Type":"Job", 
-		"@" : "CleanUpTheMess.*"
-      },
-      "Property" :"Command",
-      "Replace" : [ {"(.*)/home/workbench/ctm/runtime/(.*)/home/workbench/ctm/runtime/(.*)/home/workbench/ctm/runtime/(.*)" : "$1<WORKING_DIR>$2<WORKING_DIR>$3<WORKING_DIR>$4"} ]
+      "Property" :"SubApplication",
+      "Replace" : [ {"T(.*)" : "P$1"} ]
     },
     {
-      "ApplyOn" : {
-       "Type":"Job",
-		"@" : "DoSometingWithIt.*"
-      },
-      "Property" :"Command",
-      "Replace" : [ {"(.*)/home/workbench/ctm/runtime/(.*)/home/workbench/ctm/runtime/(.*)/home/workbench/ctm/runtime/(.*)/home/workbench/ctm/runtime/(.*)/home/workbench/ctm/runtime/(.*)/home/workbench/ctm/runtime/(.*)" : "$1<WORKING_DIR>$2<WORKING_DIR>$3<WORKING_DIR>$4<WORKING_DIR>$5<WORKING_DIR>$6<WORKING_DIR>$7"} ]
-    },
-        
-    {
-      "Property" :"Command",
-      "Replace" : [ {"(.*)/home/workbench/ctm/runtime/(.*)" : "$1C:\democtm\$2"} ]
+      "ApplyOn"     :  {"Type":"Folder"},
+      "Property" : "@",
+      "Replace" : [ {"T(.*)" : "P$1"} ]
     }
   ]
 }
+
 
 
