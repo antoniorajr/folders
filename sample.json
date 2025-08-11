@@ -1,91 +1,320 @@
 {
-    "Defaults" : {
-        "Application" : "DEMO_CICD",
-        "SubApplication" : "EXAMPLE_CICD",
-        "RunAs" : "workbench",
-        "Host" : "workbench"
-    },
-
-    "WorkbenchSampleFlow": {
-        "Type": "Folder",
-   
-        "GetPosts": {
-            "Type": "Job:Command",
-            "Command": "curl https://jsonplaceholder.typicode.com/posts/1>C:\democtm\posts.jsonn"
-           
-        },
-
-        "GetComments": {
-            "Type": "Job:Command",
-          	"Command": "curl https://jsonplaceholder.typicode.com/comments/1>C:\democtm\comments.json"
-         },
-
-		"GetPhotos": {
-            "Type": "Job:Command",
-          	"Command": "curl https://jsonplaceholder.typicode.com/photos/1>C:\democtm\photos.json"
-         },
-
-
-		"DoSometingWithIt" :{
-			"Type": "Job:Command",
-          	"Command": "cat /home/workbench/ctm/runtime/posts.json>>C:\democtm\all_in_one_file.json|cat C:\democtm\comments.json>>C:\democtm\all_in_one_file.json|cat C:\democtm\photos.json>>C:\democtm\all_in_one_file.json"
-         },
-
-		"CleanUpTheMess" :{
-			"Type": "Job:Command",
-          	"Command": "rm C:\democtm\posts.json|rm C:\democtm\comments.json|rm C:\democtm\photos.json"
-         },
-         
-         "DoSometingElse" :{
-         	"Type": "Job:Command",
-			"Description": "This will take a bit longer.",
-          	"Command": "sleep 120"
-         },
-         
-		"ShowResult" :{
-			"Type": "Job:Command",
-          	"Command": "cat C:\democtm\all_in_one_file.json"
-         },
-         
-		"ThisOneWillFail" :{
-			"Type": "Job:Command",
-          	"Command": "sleep 15"
-         },
-         			
-        "Flow1": {
-            "Type": "Flow",
-            "Sequence": ["GetPosts", "DoSometingWithIt"]
-        },
-        
-        "Flow2": {
-            "Type": "Flow",
-        	"Sequence": ["GetComments", "DoSometingWithIt"]
-        },
-        
-        "Flow3": {
-            "Type": "Flow",
-        	"Sequence": ["GetPhotos", "DoSometingWithIt"]
-        },
-              
-
-        "Flow4": {
-            "Type": "Flow",
-        	"Sequence": ["DoSometingWithIt", "CleanUpTheMess"]
-        },
-             
-  		"Flow5": {
-            "Type": "Flow",
-        	"Sequence": ["DoSometingWithIt", "DoSometingElse"]
-        },        
-		
-		"Flow6": {
-            "Type": "Flow",
-        	"Sequence": ["DoSometingElse", "ShowResult"]
-        },
-        
-		"Flow7": {
-            "Type": "Flow",
-        	"Sequence": ["DoSometingElse", "ShowResult"]
+  "aaa_democicd" : {
+    "Type" : "Folder",
+    "ControlmServer" : "IN01",
+    "CreatedBy" : "mohammed_hashim@bmc.com",
+    "When" : {
+      "RuleBasedCalendars" : {
+        "Included" : [ "EVERYDAY" ],
+        "EVERYDAY" : {
+          "Type" : "Calendar:RuleBased",
+          "When" : {
+            "DaysRelation" : "OR",
+            "WeekDays" : [ "NONE" ],
+            "MonthDays" : [ "ALL" ]
+          }
         }
+      }
+    },
+    "Job001" : {
+      "Type" : "Job:Command",
+      "SubApplication" : "T_DEMOCICD",
+      "Host" : "spock-spock_1",
+      "CreatedBy" : "antonio_almeida@bmc.com",
+      "RunAs" : "bmc",
+      "Application" : "T_DEMOCICD",
+      "Command" : "sleep 180",
+      "When" : {
+        "WeekDays" : [ "NONE" ],
+        "MonthDays" : [ "ALL" ],
+        "DaysRelation" : "OR"
+      },
+      "eventsToAdd" : {
+        "Type" : "AddEvents",
+        "Events" : [ {
+          "Event" : "Job001-TO-Job002"
+        }, {
+          "Event" : "Job001-TO-Job003"
+        } ]
+      }
+    },
+    "Job002" : {
+      "Type" : "Job:Command",
+      "SubApplication" : "T_DEMOCICD",
+      "Host" : "spock-spock_1",
+      "CreatedBy" : "antonio_almeida@bmc.com",
+      "RunAs" : "bmc",
+      "Application" : "T_DEMOCICD",
+      "Command" : "sleep 180",
+      "When" : {
+        "WeekDays" : [ "NONE" ],
+        "MonthDays" : [ "ALL" ],
+        "DaysRelation" : "OR"
+      },
+      "eventsToWaitFor" : {
+        "Type" : "WaitForEvents",
+        "Events" : [ {
+          "Event" : "Job001-TO-Job002"
+        } ]
+      },
+      "eventsToAdd" : {
+        "Type" : "AddEvents",
+        "Events" : [ {
+          "Event" : "Job002-TO-Job004"
+        } ]
+      },
+      "eventsToDelete" : {
+        "Type" : "DeleteEvents",
+        "Events" : [ {
+          "Event" : "Job001-TO-Job002"
+        } ]
+      }
+    },
+    "Job003" : {
+      "Type" : "Job:Command",
+      "SubApplication" : "T_DEMOCICD",
+      "Host" : "spock-spock_1",
+      "CreatedBy" : "antonio_almeida@bmc.com",
+      "RunAs" : "bmc",
+      "Application" : "T_DEMOCICD",
+      "Command" : "sleep 180",
+      "When" : {
+        "WeekDays" : [ "NONE" ],
+        "MonthDays" : [ "ALL" ],
+        "DaysRelation" : "OR"
+      },
+      "eventsToWaitFor" : {
+        "Type" : "WaitForEvents",
+        "Events" : [ {
+          "Event" : "Job001-TO-Job003"
+        } ]
+      },
+      "eventsToAdd" : {
+        "Type" : "AddEvents",
+        "Events" : [ {
+          "Event" : "Job003-TO-Job004"
+        } ]
+      },
+      "eventsToDelete" : {
+        "Type" : "DeleteEvents",
+        "Events" : [ {
+          "Event" : "Job001-TO-Job003"
+        } ]
+      }
+    },
+    "Job004" : {
+      "Type" : "Job:Command",
+      "SubApplication" : "T_DEMOCICD",
+      "Host" : "spock-spock_1",
+      "CreatedBy" : "antonio_almeida@bmc.com",
+      "RunAs" : "bmc",
+      "Application" : "T_DEMOCICD",
+      "Command" : "sleep 180",
+      "When" : {
+        "WeekDays" : [ "NONE" ],
+        "MonthDays" : [ "ALL" ],
+        "DaysRelation" : "OR"
+      },
+      "eventsToWaitFor" : {
+        "Type" : "WaitForEvents",
+        "Events" : [ {
+          "Event" : "Job002-TO-Job004"
+        }, {
+          "Event" : "Job003-TO-Job004"
+        } ]
+      },
+      "eventsToAdd" : {
+        "Type" : "AddEvents",
+        "Events" : [ {
+          "Event" : "Job004-TO-Job005"
+        } ]
+      },
+      "eventsToDelete" : {
+        "Type" : "DeleteEvents",
+        "Events" : [ {
+          "Event" : "Job002-TO-Job004"
+        }, {
+          "Event" : "Job003-TO-Job004"
+        } ]
+      }
+    },
+    "Job005" : {
+      "Type" : "Job:Command",
+      "SubApplication" : "T_DEMOCICD",
+      "Host" : "spock-spock_1",
+      "CreatedBy" : "antonio_almeida@bmc.com",
+      "RunAs" : "bmc",
+      "Application" : "T_DEMOCICD",
+      "Command" : "sleep 180",
+      "When" : {
+        "WeekDays" : [ "NONE" ],
+        "MonthDays" : [ "ALL" ],
+        "DaysRelation" : "OR"
+      },
+      "eventsToWaitFor" : {
+        "Type" : "WaitForEvents",
+        "Events" : [ {
+          "Event" : "Job004-TO-Job005"
+        } ]
+      },
+      "eventsToAdd" : {
+        "Type" : "AddEvents",
+        "Events" : [ {
+          "Event" : "Job005-TO-Job006"
+        }, {
+          "Event" : "Job005-TO-Job007"
+        } ]
+      },
+      "eventsToDelete" : {
+        "Type" : "DeleteEvents",
+        "Events" : [ {
+          "Event" : "Job004-TO-Job005"
+        } ]
+      }
+    },
+    "Job006" : {
+      "Type" : "Job:Command",
+      "SubApplication" : "T_DEMOCICD",
+      "Host" : "spock-spock_1",
+      "CreatedBy" : "antonio_almeida@bmc.com",
+      "RunAs" : "bmc",
+      "Application" : "T_DEMOCICD",
+      "Command" : "sleep 180",
+      "When" : {
+        "WeekDays" : [ "NONE" ],
+        "MonthDays" : [ "ALL" ],
+        "DaysRelation" : "OR"
+      },
+      "eventsToWaitFor" : {
+        "Type" : "WaitForEvents",
+        "Events" : [ {
+          "Event" : "Job005-TO-Job006"
+        } ]
+      },
+      "eventsToAdd" : {
+        "Type" : "AddEvents",
+        "Events" : [ {
+          "Event" : "Job006-TO-Job008"
+        }, {
+          "Event" : "Job006-TO-Job009"
+        } ]
+      },
+      "eventsToDelete" : {
+        "Type" : "DeleteEvents",
+        "Events" : [ {
+          "Event" : "Job005-TO-Job006"
+        } ]
+      }
+    },
+    "Job007" : {
+      "Type" : "Job:Command",
+      "SubApplication" : "T_DEMOCICD",
+      "Host" : "spock-spock_1",
+      "CreatedBy" : "antonio_almeida@bmc.com",
+      "RunAs" : "bmc",
+      "Application" : "T_DEMOCICD",
+      "Command" : "sleep 180",
+      "When" : {
+        "WeekDays" : [ "NONE" ],
+        "MonthDays" : [ "ALL" ],
+        "DaysRelation" : "OR"
+      },
+      "eventsToWaitFor" : {
+        "Type" : "WaitForEvents",
+        "Events" : [ {
+          "Event" : "Job005-TO-Job007"
+        } ]
+      },
+      "eventsToAdd" : {
+        "Type" : "AddEvents",
+        "Events" : [ {
+          "Event" : "Job007-TO-Job010"
+        } ]
+      },
+      "eventsToDelete" : {
+        "Type" : "DeleteEvents",
+        "Events" : [ {
+          "Event" : "Job005-TO-Job007"
+        } ]
+      }
+    },
+    "Job008" : {
+      "Type" : "Job:Command",
+      "SubApplication" : "T_DEMOCICD",
+      "Host" : "spock-spock_1",
+      "CreatedBy" : "antonio_almeida@bmc.com",
+      "RunAs" : "bmc",
+      "Application" : "T_DEMOCICD",
+      "Command" : "sleep 180",
+      "When" : {
+        "WeekDays" : [ "NONE" ],
+        "MonthDays" : [ "ALL" ],
+        "DaysRelation" : "OR"
+      },
+      "eventsToWaitFor" : {
+        "Type" : "WaitForEvents",
+        "Events" : [ {
+          "Event" : "Job006-TO-Job008"
+        } ]
+      },
+      "eventsToDelete" : {
+        "Type" : "DeleteEvents",
+        "Events" : [ {
+          "Event" : "Job006-TO-Job008"
+        } ]
+      }
+    },
+    "Job009" : {
+      "Type" : "Job:Command",
+      "SubApplication" : "T_DEMOCICD",
+      "Host" : "spock-spock_1",
+      "CreatedBy" : "antonio_almeida@bmc.com",
+      "RunAs" : "bmc",
+      "Application" : "T_DEMOCICD",
+      "Command" : "sleep 180",
+      "When" : {
+        "WeekDays" : [ "NONE" ],
+        "MonthDays" : [ "ALL" ],
+        "DaysRelation" : "OR"
+      },
+      "eventsToWaitFor" : {
+        "Type" : "WaitForEvents",
+        "Events" : [ {
+          "Event" : "Job006-TO-Job009"
+        } ]
+      },
+      "eventsToDelete" : {
+        "Type" : "DeleteEvents",
+        "Events" : [ {
+          "Event" : "Job006-TO-Job009"
+        } ]
+      }
+    },
+    "Job010" : {
+      "Type" : "Job:Command",
+      "SubApplication" : "T_DEMOCICD",
+      "Host" : "spock-spock_1",
+      "CreatedBy" : "antonio_almeida@bmc.com",
+      "RunAs" : "bmc",
+      "Application" : "T_DEMOCICD",
+      "Command" : "sleep 180",
+      "When" : {
+        "WeekDays" : [ "NONE" ],
+        "MonthDays" : [ "ALL" ],
+        "DaysRelation" : "OR"
+      },
+      "eventsToWaitFor" : {
+        "Type" : "WaitForEvents",
+        "Events" : [ {
+          "Event" : "Job007-TO-Job010"
+        } ]
+      },
+      "eventsToDelete" : {
+        "Type" : "DeleteEvents",
+        "Events" : [ {
+          "Event" : "Job007-TO-Job010"
+        } ]
+      }
     }
+  }
 }
