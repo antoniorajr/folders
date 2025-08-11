@@ -11,29 +11,29 @@
    
         "GetPosts": {
             "Type": "Job:Command",
-            "Command": "curl https://jsonplaceholder.typicode.com/posts/1>/home/workbench/ctm/runtime/posts.json"
+            "Command": "curl https://jsonplaceholder.typicode.com/posts/1>C:\democtm\posts.jsonn"
            
         },
 
         "GetComments": {
             "Type": "Job:Command",
-          	"Command": "curl https://jsonplaceholder.typicode.com/comments/1>/home/workbench/ctm/runtime/comments.json"
+          	"Command": "curl https://jsonplaceholder.typicode.com/comments/1>C:\democtm\comments.json"
          },
 
 		"GetPhotos": {
             "Type": "Job:Command",
-          	"Command": "curl https://jsonplaceholder.typicode.com/photos/1>/home/workbench/ctm/runtime/photos.json"
+          	"Command": "curl https://jsonplaceholder.typicode.com/photos/1>C:\democtm\photos.json"
          },
 
 
 		"DoSometingWithIt" :{
 			"Type": "Job:Command",
-          	"Command": "cat /home/workbench/ctm/runtime/posts.json>>/home/workbench/ctm/runtime/all_in_one_file.json|cat /home/workbench/ctm/runtime/comments.json>>/home/workbench/ctm/runtime/all_in_one_file.json|cat /home/workbench/ctm/runtime/photos.json>>/home/workbench/ctm/runtime/all_in_one_file.json"
+          	"Command": "cat /home/workbench/ctm/runtime/posts.json>>C:\democtm\all_in_one_file.json|cat C:\democtm\comments.json>>C:\democtm\all_in_one_file.json|cat C:\democtm\photos.json>>C:\democtm\all_in_one_file.json"
          },
 
 		"CleanUpTheMess" :{
 			"Type": "Job:Command",
-          	"Command": "rm /home/workbench/ctm/runtime/posts.json|rm /home/workbench/ctm/runtime/comments.json|rm /home/workbench/ctm/runtime/photos.json"
+          	"Command": "rm C:\democtm\posts.json|rm C:\democtm\comments.json|rm C:\democtm\photos.json"
          },
          
          "DoSometingElse" :{
@@ -44,7 +44,7 @@
          
 		"ShowResult" :{
 			"Type": "Job:Command",
-          	"Command": "cat /home/workbench/ctm/runtime/all_in_one_file.json"
+          	"Command": "cat C:\democtm\all_in_one_file.json"
          },
          
 		"ThisOneWillFail" :{
