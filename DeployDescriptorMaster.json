@@ -28,7 +28,7 @@
         
     {
       "Property" :"Command",
-      "Replace" : [ {"(.*)/home/workbench/ctm/runtime/(.*)" : "$1C:\democtm$2"} ]
+      "Replace" : [ {"(.*)/home/workbench/ctm/runtime/(.*)" : "$1C:\democtm$\2"} ]
     }
   ]
 }
